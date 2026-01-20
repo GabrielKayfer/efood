@@ -1,0 +1,17 @@
+:root {
+    --cor-fundo: #FFEBD9;
+    --cor-texto: #f17e7e;
+    }
+
+body {
+    margin: 0;
+    font-family: Roboto, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto);
+}
+
+.container {
+    max-width: 1024px;
+    width: 100%;
+    margin: 0 auto;
+    }
