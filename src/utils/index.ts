@@ -4,3 +4,10 @@ export const cores = {
     rosa: '#f17e7e',
     brancaFundoLista: '#FFF8F2',
 }
+
+export const truncate = (text: string, max = 150) => {
+  if (text.length <= max) return text
+
+  const sliced = text.slice(0, max - 3).trimEnd()
+  return sliced + "..."
+}

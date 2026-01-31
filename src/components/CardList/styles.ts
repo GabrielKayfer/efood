@@ -8,12 +8,15 @@ export const Container = styled.section`
 
 export const List = styled.ul<{ $variant: 'restaurants' | 'products' }>`
     display: grid;
-
+    
     list-style: none;
     margin: 0;
     padding: 0;
 
     align-items: stretch;
+    width: 100%;
+    
+    
 
     ${({ $variant }) =>
         $variant === 'restaurants'
@@ -22,7 +25,8 @@ export const List = styled.ul<{ $variant: 'restaurants' | 'products' }>`
         gap: 48px 80px;
         `
             : `
-        grid-template-columns: repeat(3, 1fr);
-        gap: 32px;
-        `}
+         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 32px 32px;
+        `
+    }
 `

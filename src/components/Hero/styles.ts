@@ -8,8 +8,9 @@ export const Image = styled.div`
     display: block;                          
 
     padding: 0;
-
     background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
     position: relative;
 
     &::after {

@@ -10,6 +10,7 @@ export const RestCard = styled.article<{ $variant: Variant }>`
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   ${({ $variant }) =>
     $variant === "product"
@@ -17,6 +18,8 @@ export const RestCard = styled.article<{ $variant: Variant }>`
         background-color: ${cores.rosa};
         color: ${cores.brancaRosada};
         padding: 8px;
+        border-radius: 8px;
+        
       `
       : ""}
 
@@ -49,6 +52,7 @@ export const CardImage = styled.img<{ $variant: Variant }>`
       ? `
         width: 100%;
         height: 167px;
+        border-radius: 8px;
       `
       : ""}
 `
@@ -71,6 +75,7 @@ export const ConteudoCard = styled.div<{ $variant: Variant }>`
   flex-direction: column;
   flex: 1;
   padding: 8px;
+  height: 100%;
 
     ${({ $variant }) =>
     $variant === "product"

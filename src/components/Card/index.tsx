@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom"
+import { truncate } from "../../utils"
 
 import Tag from "../Tag"
 import {
@@ -17,13 +18,14 @@ import {
 import estrela from "../../assets/images/estrela.png"
 
 type Props = {
-    variant?: "restaurant" | "product"
-    title: string
-    description: string
-    image: string
-    id?: number
-    nota?: string
-    categories?: string[]
+  variant?: "restaurant" | "product"
+  title: string
+  description: string
+  image: string
+  id?: number
+  nota?: string
+  categories?: string[]
+  onActionClick?: () => void
 }
 
 const Card = ({
@@ -34,6 +36,7 @@ const Card = ({
     image,
     nota,
     id,
+    onActionClick
 }: Props) => {
     const isRestaurant = variant === "restaurant"
 
@@ -67,7 +70,7 @@ const Card = ({
                     )}
                 </ContainerTitulo>
 
-                <Descricao $variant={variant}>{description}</Descricao>
+                <Descricao $variant={variant}>{truncate(description, 140)}</Descricao>
 
                 <ButtonWrapper $variant={variant}>
                     {isRestaurant && id ? (
@@ -75,8 +78,15 @@ const Card = ({
                             Saber mais
                         </Tag>
                     ) : (
-                        <Tag as="button" type="button">
-                            Adicionar ao carrinho
+                        <Tag
+                        as="button"
+                        type="button"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onActionClick?.()
+                        }}
+                        >
+                        Adicionar ao carrinho
                         </Tag>
                     )}
                 </ButtonWrapper>
