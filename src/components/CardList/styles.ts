@@ -26,12 +26,6 @@ export const List = styled.ul<{ $variant: 'restaurants' | 'products' }>`
             : `
             grid-template-columns: 1fr 1fr 1fr;
             gap: 32px 16px;
-
-            li{
-                max-width: 320px;
-                width: 100%;
-                height: 330px;
-            }
         `
     }
 `
