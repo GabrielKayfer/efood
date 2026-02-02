@@ -7,20 +7,27 @@ import { Modal, ModalContent, ModalInfos, ProductImage, ProductDetails } from ".
 
 import fechar from "../../assets/images/fechar.png"
 
-import { useEffect, useMemo, useState } from "react"
+import { useMemo, useState } from "react"
 import { useParams } from "react-router-dom"
-import type { ApiRestaurant } from "../../models/ApiRestaurant"
 import { truncate } from "../../utils"
+
+import { useGetRestaurantePorIdQuery } from "../../services/api"
+import Cart from "../../components/Cart"
+
+import { add, open } from "../../store/reducers/cart"
+import { useDispatch } from "react-redux"
+
+import { formataPreco } from "../../utils"
 
 const RestPage = () => {
   const { id } = useParams()
+  const dispatch = useDispatch()
 
-  const [restaurant, setRestaurant] = useState<ApiRestaurant | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const {data: restaurant} = useGetRestaurantePorIdQuery(id!)
 
   const [isModalVisivel, setIsModalVisivel] = useState(false)
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null)
+
 
   const openModal = (productId: number) => {
     setSelectedProductId(productId)
@@ -32,34 +39,24 @@ const RestPage = () => {
     setSelectedProductId(null)
   }
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true)
-        setError("")
-
-        const res = await fetch("https://api-ebac.vercel.app/api/efood/restaurantes")
-        if (!res.ok) throw new Error("Falha ao carregar restaurante")
-
-        const data: ApiRestaurant[] = await res.json()
-        const found = data.find((r) => r.id === Number(id)) ?? null
-
-        if (!found) throw new Error("Restaurante não encontrado")
-        setRestaurant(found)
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Erro desconhecido")
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    load()
-  }, [id])
+  
 
   const selectedProduct = useMemo(() => {
     if (!restaurant || selectedProductId === null) return null
     return restaurant.cardapio.find((p) => p.id === selectedProductId) ?? null
   }, [restaurant, selectedProductId])
+
+    const addToCart = () => {
+    if (!selectedProduct) return
+    dispatch(add(selectedProduct))
+    closeModal()
+    dispatch(open())
+  }
+
+
+  if (!restaurant) {
+    return <h3>Carregando...</h3>
+  }
 
   return (
     <>
@@ -73,12 +70,7 @@ const RestPage = () => {
   <HeaderHero tipo="..." titulo="Carregando..." capa="..." />
       )}
 
-      <CardList variant="products">
-        {loading && <p>Carregando...</p>}
-        {!loading && error && <p>{error}</p>}
-
-        {!loading &&
-          !error &&
+      <CardList variant="products">{
           restaurant?.cardapio.map((product) => (
             <li key={product.id}>
               <Card
@@ -112,8 +104,8 @@ const RestPage = () => {
                     Serve: {selectedProduct.porcao}
                   </p>
 
-                  <button type="button">
-                    Adicionar ao carrinho R$ {selectedProduct.preco.toFixed(2).replace(".", ",")}
+                  <button type="button" onClick={addToCart}>
+                    Adicionar ao carrinho {formataPreco(selectedProduct.preco)}
                   </button>
                 </ProductDetails>
               </ModalInfos>
@@ -123,6 +115,7 @@ const RestPage = () => {
           <div className="overlay" onClick={closeModal} />
         </Modal>
       <Footer />
+      <Cart/>
     </>
   )
 }

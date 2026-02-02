@@ -1,30 +1,16 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { RouterProvider } from 'react-router-dom'
 
 import { GlobalCss } from './styles'
-
-import Home from './pages/Home'
-import RestPage from './pages/RestaurantPage'
-
-const rotas = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />
-  },
-  {
-    path: '/restaurantes/:id',
-    element: <RestPage />
-  }
-])
+import routes from './routes'
+import { store } from './store'
 
 function App() {
   return (
-    <>
+    <Provider store={store}>
       <GlobalCss />
-      <div>
-        <RouterProvider router={rotas} />
-      </div>
-    </>
-
+      <RouterProvider router={routes} />
+    </Provider>
   )
 }
 

@@ -11,3 +11,10 @@ export const truncate = (text: string, max = 150) => {
   const sliced = text.slice(0, max - 3).trimEnd()
   return sliced + "..."
 }
+
+export const formataPreco = (preco = 0) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(preco)
+}

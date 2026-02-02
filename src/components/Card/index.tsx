@@ -18,14 +18,14 @@ import {
 import estrela from "../../assets/images/estrela.png"
 
 type Props = {
-  variant?: "restaurant" | "product"
-  title: string
-  description: string
-  image: string
-  id?: number
-  nota?: string
-  categories?: string[]
-  onActionClick?: () => void
+    variant?: "restaurant" | "product"
+    title: string
+    description: string
+    image: string
+    id?: number
+    nota?: string
+    categories?: string[]
+    onActionClick?: () => void
 }
 
 const Card = ({

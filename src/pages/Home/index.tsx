@@ -1,49 +1,24 @@
-import { useEffect, useState } from "react"
+
 
 import CardList from "../../components/CardList"
 import Footer from "../../components/Footer"
 import Header from "../../components/Header"
 import Card from "../../components/Card"
 
-import type { ApiRestaurant } from "../../models/ApiRestaurant"
+import { useGetRestaurantesQuery } from "../../services/api"
 
 const Home = () => {
-  const [restaurants, setRestaurants] = useState<ApiRestaurant[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
+  const {data: restaurants} = useGetRestaurantesQuery()
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true)
-        setError("")
-
-        const res = await fetch("https://api-ebac.vercel.app/api/efood/restaurantes")
-        if (!res.ok) throw new Error("Falha ao carregar restaurantes")
-
-        const data: ApiRestaurant[] = await res.json()
-        setRestaurants(data)
-      } catch (e) {
-        setError(e instanceof Error ? e.message : "Erro desconhecido")
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    load()
-  }, [])
+  if (!restaurants) {
+    return <h3>Carregando...</h3>
+  }
 
   return (
     <>
       <Header />
-
       <CardList variant="restaurants">
-        {loading && <p>Carregando...</p>}
-        {!loading && error && <p>{error}</p>}
-
-        {!loading &&
-          !error &&
-          restaurants.map((r) => (
+          {restaurants?.map((r) => (
             <Card
               key={r.id}
               id={r.id}
@@ -56,7 +31,7 @@ const Home = () => {
           ))}
       </CardList>
 
-      <Footer />
+      <Footer /> 
     </>
   )
 }

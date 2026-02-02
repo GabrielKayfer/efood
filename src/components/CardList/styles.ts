@@ -2,7 +2,7 @@ import styled from "styled-components"
 import { cores } from "../../utils"
 
 export const Container = styled.section`
-    padding: 80px 172px 120px;
+    padding: 80px 0 120px;
     background-color: ${cores.brancaFundoLista};
 `
 
@@ -14,7 +14,6 @@ export const List = styled.ul<{ $variant: 'restaurants' | 'products' }>`
     padding: 0;
 
     align-items: stretch;
-    width: 100%;
     
     
 
@@ -25,8 +24,14 @@ export const List = styled.ul<{ $variant: 'restaurants' | 'products' }>`
         gap: 48px 80px;
         `
             : `
-         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-        gap: 32px 32px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 32px 16px;
+
+            li{
+                max-width: 320px;
+                width: 100%;
+                height: 330px;
+            }
         `
     }
 `

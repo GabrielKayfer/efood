@@ -23,3 +23,4 @@ export const TitleTag = styled.span`
     font-size: 18px;
     font-weight: 900;
     color: ${cores.rosa}`
+
