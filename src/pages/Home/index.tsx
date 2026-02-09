@@ -26,7 +26,7 @@ const Home = () => {
               description={r.descricao}
               image={r.capa}
               nota={String(r.avaliacao)}
-              categories={[r.tipo, ...(r.destacado ? ["Destaque"] : [])]}
+              categories={[r.tipo, ...(r.destacado ? ["destaque"] : [])]}
             />
           ))}
       </CardList>

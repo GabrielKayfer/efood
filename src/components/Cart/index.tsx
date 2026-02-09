@@ -1,51 +1,26 @@
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from 'react-redux'
+import type { RootReducer } from '../../store'
 
-import { Overlay, CartContainer, Sidebar, Prices, CartItem } from "./styles"
-import type { RootReducer } from "../../store"
-import { close, remove } from '../../store/reducers/cart'
+import { close } from '../../store/reducers/cart'
+import CartLayout from './CartLayout'
 
-import { formataPreco } from "../../utils"
+import CartItemsStep from './steps/CartItemsStep'
+import DeliveryStep from './steps/DeliveryStep'
+import PaymentStep from './steps/PaymentStep'
+import ConfirmationStep from './steps/ConfirmationStep'
 
 const Cart = () => {
-    const {isOpen, items} = useSelector((state: RootReducer) => state.cart)
-
     const dispatch = useDispatch()
+    const { isOpen, step } = useSelector((state: RootReducer) => state.cart)
 
-    const closeCart = () => {
-        dispatch(close())
-    }
-
-    const getTotalPrice = () => {
-        return items.reduce((acumulador, valorAtual) => {
-            return (acumulador += valorAtual.preco)
-        }, 0)
-    }
-
-    const removeItem = (id: number) => {
-        dispatch(remove(id))
-    }
-    
     return (
-    <CartContainer className={isOpen ? 'is-open' : ''}>
-        <Overlay onClick={closeCart}/>
-        <Sidebar>
-            <ul>
-                {items.map((item) => (
-                <CartItem key={item.id}>
-                    <img src={item.foto} alt={item.nome} />
-                    <div>
-                        <h3>{item.nome}</h3>
-                        <span>{formataPreco(item.preco)}</span>
-                    </div>
-                    <button onClick={() => removeItem(item.id)}/>
-                </CartItem>
-                ))}
-            </ul>
-            <Prices>Valor total<span>{formataPreco(getTotalPrice())}</span></Prices>
-            <button>Continuar com a entrega</button>
-        </Sidebar>
-    </CartContainer>
-)
+        <CartLayout isOpen={isOpen} onClose={() => dispatch(close())}>
+            {step === 'cart' && <CartItemsStep />}
+            {step === 'delivery' && <DeliveryStep />}
+            {step === 'payment' && <PaymentStep />}
+            {step === 'success' && <ConfirmationStep />}
+        </CartLayout>
+    )
 }
 
 export default Cart
