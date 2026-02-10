@@ -1,19 +1,15 @@
 import { useDispatch, useSelector } from 'react-redux'
-import { useState } from 'react'
+import { useEffect } from 'react'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
+import { InputMask } from '@react-input/mask'
+
 import type { RootReducer } from '../../../store'
+import { goBackToDelivery, setPayment, finishOrder } from '../../../store/reducers/cart'
 
-import { setPayment, finishOrder, goBackToDelivery } from '../../../store/reducers/cart'
-
-import {
-    FormContainer,
-    InputGroup,
-    InputLarge,
-    InputSmall,
-    Row,
-    TitleStep
-} from '../styles'
-
-import { formataPreco } from '../../../utils'
+import * as S from '../styles'
+import { usePurchaseMutation } from '../../../services/api'
+import { formatPrice, onlyDigits } from '../../../utils'
 
 const PaymentStep = () => {
     const dispatch = useDispatch()
@@ -22,25 +18,42 @@ const PaymentStep = () => {
         (state: RootReducer) => state.cart
     )
 
-    const [form, setForm] = useState(paymentData)
-    const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState('')
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-        setForm((prev) => ({ ...prev, [name]: value }))
-    }
+    const [purchase, { isLoading, isError, data }] = usePurchaseMutation()
 
     const getTotalPrice = () => items.reduce((acc, item) => acc + item.preco, 0)
 
-    const handleFinish = async () => {
-        setError('')
-        setIsLoading(true)
+    const formik = useFormik({
+        initialValues: paymentData,
+        enableReinitialize: true,
+        validationSchema: Yup.object({
+            cardOwner: Yup.string()
+                .min(5, 'O nome precisa ter pelo menos 5 caracteres')
+                .required('Campo obrigatório'),
+            cardNumber: Yup.string()
+                .test('card-len', 'O número do cartão precisa ter 16 números', (v) => {
+                    return onlyDigits(v ?? '').length === 16
+                })
+                .required('Campo obrigatório'),
+            cardCode: Yup.string()
+                .test('cvv-len', 'O código do cartão tem 3 dígitos', (v) => {
+                    return onlyDigits(v ?? '').length === 3
+                })
+                .required('Campo obrigatório'),
+            expiresMonth: Yup.string()
+                .test('mm', 'O mês de vencimento do cartão tem 2 dígitos', (v) => {
+                    return onlyDigits(v ?? '').length === 2
+                })
+                .required('Campo obrigatório'),
+            expiresYear: Yup.string()
+                .test('yy', 'O ano de vencimento do cartão tem 2 dígitos', (v) => {
+                    return onlyDigits(v ?? '').length === 2
+                })
+                .required('Campo obrigatório')
+        }),
+        onSubmit: (values) => {
+            dispatch(setPayment(values))
 
-        try {
-            dispatch(setPayment(form))
-
-            const payload = {
+            purchase({
                 products: items.map((item) => ({
                     id: item.id,
                     price: item.preco
@@ -57,127 +70,128 @@ const PaymentStep = () => {
                 },
                 payment: {
                     card: {
-                        name: form.cardOwner,
-                        number: form.cardNumber,
-                        code: Number(form.cardCode),
+                        name: values.cardOwner,
+                        number: values.cardNumber,
+                        code: Number(values.cardCode),
                         expires: {
-                            month: Number(form.expiresMonth),
-                            year: Number(form.expiresYear)
+                            month: Number(values.expiresMonth),
+                            year: Number(values.expiresYear)
                         }
                     }
                 }
-            }
-
-            const response = await fetch(
-                'https://api-ebac.vercel.app/api/efood/checkout',
-                {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }
-            )
-
-            if (!response.ok) {
-                throw new Error(`Checkout falhou (HTTP ${response.status})`)
-            }
-
-            const data: { orderId?: string } = await response.json()
-
-            if (!data.orderId) {
-                throw new Error('A API não retornou o orderId.')
-            }
-
-            dispatch(finishOrder({ orderId: data.orderId }))
-        } catch (err) {
-            const message =
-                err instanceof Error ? err.message : 'Erro inesperado ao finalizar.'
-            setError(message)
-        } finally {
-            setIsLoading(false)
+            })
         }
+    })
+
+    useEffect(() => {
+        if (data?.orderId) {
+            dispatch(finishOrder({ orderId: data.orderId }))
+        }
+    }, [data, dispatch])
+
+    const getErrorMessage = (fieldName: keyof typeof formik.values) => {
+        const touched = !!formik.touched[fieldName]
+        const error = formik.errors[fieldName]
+        return touched && error ? String(error) : ''
     }
 
     return (
-        <FormContainer>
-            <TitleStep>
-                Pagamento - Valor total a ser pago <span>{formataPreco(getTotalPrice())}</span>
-            </TitleStep>
+        <form onSubmit={formik.handleSubmit}>
+            <S.FormContainer>
+                <S.TitleStep>
+                    Pagamento - Valor total a ser pago <span>{formatPrice(getTotalPrice())}</span>
+                </S.TitleStep>
 
-            <InputGroup>
-                <label htmlFor="cardOwner">Nome no cartão</label>
-                <input
-                    id="cardOwner"
-                    name="cardOwner"
-                    type="text"
-                    value={form.cardOwner}
-                    onChange={handleChange}
-                />
-            </InputGroup>
-
-            <Row style={{ gap: '34px' }}>
-                <InputLarge>
-                    <label htmlFor="cardNumber">Número do cartão</label>
+                <S.InputGroup>
+                    <label htmlFor="cardOwner">Nome no cartão</label>
                     <input
-                        className="inputCard"
-                        id="cardNumber"
-                        name="cardNumber"
+                        id="cardOwner"
+                        name="cardOwner"
                         type="text"
-                        value={form.cardNumber}
-                        onChange={handleChange}
+                        value={formik.values.cardOwner}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
                     />
-                </InputLarge>
+                    <p>{getErrorMessage('cardOwner')}</p>
+                </S.InputGroup>
 
-                <InputSmall>
-                    <label htmlFor="cardCode">CVV</label>
-                    <input
-                        id="cardCode"
-                        name="cardCode"
-                        type="text"
-                        value={form.cardCode}
-                        onChange={handleChange}
-                    />
-                </InputSmall>
-            </Row>
+                <S.Row style={{ gap: '34px' }}>
+                    <S.InputLarge>
+                        <label htmlFor="cardNumber">Número do cartão</label>
+                        <InputMask
+                            id="cardNumber"
+                            name="cardNumber"
+                            type="text"
+                            value={formik.values.cardNumber}
+                            onChange={formik.handleChange}
+                            onBlur={() => formik.setFieldTouched('cardNumber', true)}
+                            mask="____ ____ ____ ____"
+                            replacement={{ _: /\d/ }}
+                        />
+                        <p>{getErrorMessage('cardNumber')}</p>
+                    </S.InputLarge>
 
-            <Row style={{ gap: '34px' }}>
-                <InputGroup>
-                    <label htmlFor="expiresMonth">Mês de vencimento</label>
-                    <input
-                        id="expiresMonth"
-                        name="expiresMonth"
-                        type="text"
-                        value={form.expiresMonth}
-                        onChange={handleChange}
-                    />
-                </InputGroup>
+                    <S.InputSmall>
+                        <label htmlFor="cardCode">CVV</label>
+                        <InputMask
+                            id="cardCode"
+                            name="cardCode"
+                            type="text"
+                            value={formik.values.cardCode}
+                            onChange={formik.handleChange}
+                            onBlur={() => formik.setFieldTouched('cardCode', true)}
+                            mask="___"
+                            replacement={{ _: /\d/ }}
+                        />
 
-                <InputGroup>
-                    <label htmlFor="expiresYear">Ano de vencimento</label>
-                    <input
-                        id="expiresYear"
-                        name="expiresYear"
-                        type="text"
-                        value={form.expiresYear}
-                        onChange={handleChange}
-                    />
-                </InputGroup>
-            </Row>
+                        <p>{getErrorMessage('cardCode')}</p>
+                    </S.InputSmall>
+                </S.Row>
 
-            {error && <p>{error}</p>}
+                <S.Row style={{ gap: '34px' }}>
+                    <S.InputGroup>
+                        <label htmlFor="expiresMonth">Mês de vencimento</label>
+                        <InputMask
+                            id="expiresMonth"
+                            name="expiresMonth"
+                            type="text"
+                            value={formik.values.expiresMonth}
+                            onChange={formik.handleChange}
+                            onBlur={() => formik.setFieldTouched('expiresMonth', true)}
+                            mask="__"
+                            replacement={{ _: /\d/ }}
+                        />
+                        <p>{getErrorMessage('expiresMonth')}</p>
+                    </S.InputGroup>
 
-            <button
-                className="buttomMargin"
-                type="button"
-                onClick={handleFinish}
-                disabled={isLoading}
-            >
-                {isLoading ? 'Finalizando...' : 'Finalizar pagamento'}
-            </button>
+                    <S.InputGroup>
+                        <label htmlFor="expiresYear">Ano de vencimento</label>
+                        <InputMask
+                            id="expiresYear"
+                            name="expiresYear"
+                            type="text"
+                            value={formik.values.expiresYear}
+                            onChange={formik.handleChange}
+                            onBlur={() => formik.setFieldTouched('expiresYear', true)}
+                            mask="__"
+                            replacement={{ _: /\d/ }}
+                        />
 
-            <button type="button" onClick={() => dispatch(goBackToDelivery())} disabled={isLoading}>
-                Voltar para edição de endereço
-            </button>
-        </FormContainer>
+                        <p>{getErrorMessage('expiresYear')}</p>
+                    </S.InputGroup>
+                </S.Row>
+
+                {isError && <p>Ocorreu um erro ao processar o pagamento.</p>}
+
+                <button className="buttomMargin" type="submit" disabled={isLoading}>
+                    {isLoading ? 'Finalizando...' : 'Finalizar pagamento'}
+                </button>
+
+                <button type="button" onClick={() => dispatch(goBackToDelivery())} disabled={isLoading}>
+                    Voltar para edição de endereço
+                </button>
+            </S.FormContainer>
+        </form>
     )
 }
 

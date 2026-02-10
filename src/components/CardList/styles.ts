@@ -1,9 +1,9 @@
 import styled from "styled-components"
-import { cores } from "../../utils"
+import { colors } from "../../utils"
 
 export const Container = styled.section`
     padding: 80px 0 120px;
-    background-color: ${cores.brancaFundoLista};
+    background-color: ${colors.listBackgroundWhite};
 `
 
 export const List = styled.ul<{ $variant: 'restaurants' | 'products' }>`

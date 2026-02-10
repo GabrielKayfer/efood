@@ -1,5 +1,3 @@
-
-
 import CardList from "../../components/CardList"
 import Footer from "../../components/Footer"
 import Header from "../../components/Header"
@@ -25,7 +23,7 @@ const Home = () => {
               title={r.titulo}
               description={r.descricao}
               image={r.capa}
-              nota={String(r.avaliacao)}
+              rating={String(r.avaliacao)}
               categories={[r.tipo, ...(r.destacado ? ["destaque"] : [])]}
             />
           ))}

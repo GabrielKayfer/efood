@@ -1,4 +1,4 @@
-import { CartContainer, Overlay, Sidebar } from './styles'
+import * as S from './styles'
 
 type Props = {
     isOpen: boolean
@@ -7,10 +7,10 @@ type Props = {
 }
 
 const CartLayout = ({ isOpen, onClose, children }: Props) => (
-    <CartContainer className={isOpen ? 'is-open' : ''}>
-        <Overlay onClick={onClose} />
-        <Sidebar>{children}</Sidebar>
-    </CartContainer>
+    <S.CartContainer className={isOpen ? 'is-open' : ''}>
+        <S.Overlay onClick={onClose} />
+        <S.Sidebar>{children}</S.Sidebar>
+    </S.CartContainer>
 )
 
 export default CartLayout

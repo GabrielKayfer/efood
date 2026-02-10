@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cores } from "../../utils";
+import { colors } from "../../utils";
 
 export const Modal = styled.div`
     position: fixed;
@@ -12,7 +12,7 @@ export const Modal = styled.div`
     justify-content: center;
     align-items: center;
 
-    &.visivel {
+    &.visible {
     display: flex;}
     
 .overlay {
@@ -25,18 +25,19 @@ export const Modal = styled.div`
     }`
 
 export const ModalContent = styled.div`
-    background-color: ${cores.rosa};
+    background-color: ${colors.pink};
     padding: 8px;
     max-width: 1024px;
     height: 344px;
     position: relative;
     z-index: 1;
-    color: ${cores.branca};
+    color: ${colors.white};
     header {
         display: flex;
         justify-content: flex-end;
 
             img{
+        cursor: pointer;
         max-width: 100%;
 }
 }
@@ -81,5 +82,5 @@ button {
     cursor: pointer;
     text-decoration: none;
     border: none;
-    background-color: ${cores.brancaRosada};
-    color: ${cores.rosa};}`
+    background-color: ${colors.pinkishWhite};
+    color: ${colors.pink};}`

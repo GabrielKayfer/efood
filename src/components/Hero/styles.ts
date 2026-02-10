@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cores } from "../../utils";
+import { colors } from "../../utils";
 
 export const Image = styled.div`
     width: 100%;
@@ -23,7 +23,7 @@ export const Image = styled.div`
 
 export const CategoryTitle = styled.span`
     font-weight: 100;
-    color: ${cores.branca};
+    color: ${colors.white};
     position: relative;
     z-index: 1;
     font-size: 32px;
@@ -31,7 +31,7 @@ export const CategoryTitle = styled.span`
 
 export const RestauranteTitle = styled.h1`
     font-weight: 900;
-    color: ${cores.branca};
+    color: ${colors.white};
     position: relative;
     z-index: 1;
     font-size: 32px;

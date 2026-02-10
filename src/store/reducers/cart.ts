@@ -99,14 +99,13 @@ const cartSlice = createSlice({
         finishOrder: (state, action: PayloadAction<{ orderId: string }>) => {
             state.orderId = action.payload.orderId
             state.step = 'success'
-            state.items = []
         },
-
         resetFlow: (state) => {
             state.step = 'cart'
             state.orderId = undefined
             state.delivery = initialState.delivery
             state.payment = initialState.payment
+            state.items = []    
         }
     }
 })

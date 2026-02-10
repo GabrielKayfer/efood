@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootReducer } from '../../store'
 
-import { close } from '../../store/reducers/cart'
-import CartLayout from './CartLayout'
 
+import CartLayout from './CartLayout'
 import CartItemsStep from './steps/CartItemsStep'
 import DeliveryStep from './steps/DeliveryStep'
 import PaymentStep from './steps/PaymentStep'
 import ConfirmationStep from './steps/ConfirmationStep'
+
+import { close } from '../../store/reducers/cart'
 
 const Cart = () => {
     const dispatch = useDispatch()

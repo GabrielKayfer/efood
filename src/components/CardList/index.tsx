@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
-import { Container, List } from './styles'
+
+import * as S from './styles'
 
 type Props = {
     children: ReactNode
@@ -7,11 +8,11 @@ type Props = {
 }
 
 const CardList = ({ children, variant = 'restaurants' }: Props) => (
-    <Container>
+    <S.Container>
         <div className="container">
-            <List $variant={variant}>{children}</List>
+            <S.List $variant={variant}>{children}</S.List>
         </div>
-    </Container>
+    </S.Container>
 )
 
 export default CardList

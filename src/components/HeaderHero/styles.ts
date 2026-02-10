@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cores } from "../../utils";
+import { colors } from "../../utils";
 
 export const HeaderBar = styled.header`
     display: flex;
@@ -22,5 +22,5 @@ export const Image = styled.div`
 export const TitleTag = styled.span`
     font-size: 18px;
     font-weight: 900;
-    color: ${cores.rosa}`
+    color: ${colors.pink}`
 

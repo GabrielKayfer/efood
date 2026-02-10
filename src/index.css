@@ -1,13 +1,13 @@
 :root {
-    --cor-fundo: #FFEBD9;
-    --cor-texto: #f17e7e;
+    --color-background: #FFEBD9;
+    --color-text: #f17e7e;
     }
 
 body {
     margin: 0;
     font-family: Roboto, sans-serif;
-    background-color: var(--cor-fundo);
-    color: var(--cor-texto);
+    background-color: var(--color-background);
+    color: var(--color-text);
 }
 
 .container {

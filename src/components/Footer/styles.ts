@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { cores } from "../../utils";
+import { colors } from "../../utils";
 
 export const FooterContainer = styled.footer`
   height: 298px;
-  background-color: ${cores.brancaRosada};
+  background-color: ${colors.pinkishWhite};
 `;
 
 export const FooterContent = styled.div`
@@ -46,7 +46,7 @@ export const FooterText = styled.p`
   font-size: 10px;
   font-weight: 400;
   line-height: 22px;
-  color: ${cores.rosa};
+  color: ${colors.pink};
 
   margin: 0 0 40px;
 `;

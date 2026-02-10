@@ -1,21 +1,10 @@
 import { Link } from "react-router-dom"
-import { truncate } from "../../utils"
 
 import Tag from "../Tag"
-import {
-    RestCard,
-    Titulo,
-    Descricao,
-    StarIcon,
-    ContainerTitulo,
-    ContainerNota,
-    ConteudoCard,
-    Categorys,
-    CardImage,
-    ButtonWrapper
-} from "./styles"
+import { truncate } from "../../utils"
 
-import estrela from "../../assets/images/estrela.png"
+import star from "../../assets/images/estrela.png"
+import * as S from "./styles"
 
 type Props = {
     variant?: "restaurant" | "product"
@@ -23,7 +12,7 @@ type Props = {
     description: string
     image: string
     id?: number
-    nota?: string
+    rating?: string
     categories?: string[]
     onActionClick?: () => void
 }
@@ -34,45 +23,45 @@ const Card = ({
     categories,
     description,
     image,
-    nota,
+    rating,
     id,
     onActionClick
 }: Props) => {
     const isRestaurant = variant === "restaurant"
 
     return (
-        <RestCard $variant={variant}>
-            <CardImage
+        <S.RestaurantCard $variant={variant}>
+            <S.CardImage
                 $variant={variant}
                 src={image}
                 alt={isRestaurant ? `Imagem do restaurante ${title}` : `Imagem do produto ${title}`}
             />
 
             {isRestaurant && categories && categories.length > 0 && (
-                <Categorys>
+                <S.Categories>
                     {categories.map((category) => (
                         <li key={category}>
                             <Tag>{category}</Tag>
                         </li>
                     ))}
-                </Categorys>
+                </S.Categories>
             )}
 
-            <ConteudoCard $variant={variant}>
-                <ContainerTitulo $variant={variant}>
-                    <Titulo $variant={variant}>{title}</Titulo>
+            <S.CardContent $variant={variant}>
+                <S.TitleContainer $variant={variant}>
+                    <S.Title $variant={variant}>{title}</S.Title>
 
-                    {isRestaurant && nota && (
-                        <ContainerNota>
-                            <Titulo $variant={variant}>{nota}</Titulo>
-                            <StarIcon src={estrela} alt="Avaliação" />
-                        </ContainerNota>
+                    {isRestaurant && rating && (
+                        <S.RatingContainer>
+                            <S.Title $variant={variant}>{rating}</S.Title>
+                            <S.StarIcon src={star} alt="Avaliação" />
+                        </S.RatingContainer>
                     )}
-                </ContainerTitulo>
+                </S.TitleContainer>
 
-                <Descricao $variant={variant}>{truncate(description, 140)}</Descricao>
+                <S.Description $variant={variant}>{truncate(description, 140)}</S.Description>
 
-                <ButtonWrapper $variant={variant}>
+                <S.ButtonWrapper $variant={variant}>
                     {isRestaurant && id ? (
                         <Tag as={Link} to={`/restaurantes/${id}`}>
                             Saber mais
@@ -89,9 +78,9 @@ const Card = ({
                         Adicionar ao carrinho
                         </Tag>
                     )}
-                </ButtonWrapper>
-            </ConteudoCard>
-        </RestCard>
+                </S.ButtonWrapper>
+            </S.CardContent>
+        </S.RestaurantCard>
     )
 }
 

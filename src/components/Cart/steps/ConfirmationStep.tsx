@@ -1,7 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootReducer } from '../../../store'
-import { SucessStep, TitleStep } from '../styles'
+
 import { resetFlow, close } from '../../../store/reducers/cart'
+
+import * as S from '../styles'
 
 const ConfirmationStep = () => {
     const dispatch = useDispatch()
@@ -13,10 +15,10 @@ const ConfirmationStep = () => {
     }
 
     return (
-        <SucessStep>
-            <TitleStep>
+        <S.SucessStep>
+            <S.TitleStep>
                 Pedido confirmado - {orderId ? orderId : '---'}
-            </TitleStep>
+            </S.TitleStep>
 
             <p>
                 Estamos felizes em informar que seu pedido já está em processo de
@@ -38,7 +40,7 @@ const ConfirmationStep = () => {
             <button type="button" onClick={handleFinish}>
                 Concluir
             </button>
-        </SucessStep>
+        </S.SucessStep>
     )
 }
 

@@ -1,8 +1,8 @@
-export const cores = {
-    branca: '#FFFFFF',
-    brancaRosada: '#FFEBD9',
-    rosa: '#f17e7e',
-    brancaFundoLista: '#FFF8F2',
+export const colors = {
+    white: '#FFFFFF',
+    pinkishWhite: '#FFEBD9',
+    pink: '#f17e7e',
+    listBackgroundWhite: '#FFF8F2',
 }
 
 export const truncate = (text: string, max = 150) => {
@@ -12,9 +12,11 @@ export const truncate = (text: string, max = 150) => {
   return sliced + "..."
 }
 
-export const formataPreco = (preco = 0) => {
+export const formatPrice = (amount = 0) => {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
-  }).format(preco)
+  }).format(amount)
 }
+
+export const onlyDigits = (value: string) => value.replace(/\D/g, '')

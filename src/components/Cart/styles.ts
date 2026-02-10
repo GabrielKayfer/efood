@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { cores } from "../../utils";
+import { colors } from "../../utils";
 
 import lixeira from '../../assets/images/lixeira.png'
 
@@ -28,7 +28,7 @@ z-index: 1;
 }
 `
 export const Sidebar = styled.aside`
-background-color: ${cores.rosa};
+background-color: ${colors.pink};
 z-index: 1;
 padding: 16px 8px 0 8px;
 max-width: 360px;
@@ -43,8 +43,8 @@ width: 100%;
     cursor: pointer;
     text-decoration: none;
     border: none;
-    background-color: ${cores.brancaRosada};
-    color: ${cores.rosa};}
+    background-color: ${colors.pinkishWhite};
+    color: ${colors.pink};}
 
 ul {
     padding-left: 0;
@@ -58,7 +58,7 @@ display: flex;
 justify-content: space-between;
 font-weight: bold;
 font-size: 14px;
-color: ${cores.brancaRosada};
+color: ${colors.pinkishWhite};
 margin-top: 40px;
 margin-bottom: 16px;
 
@@ -69,7 +69,7 @@ h3 {
 `
 export const CartItem = styled.li`
   display: flex;
-  background-color: ${cores.brancaRosada};
+  background-color: ${colors.pinkishWhite};
   padding: 8px;
   margin-top: 16px;
   position: relative;
@@ -84,7 +84,7 @@ export const CartItem = styled.li`
   h3 {
     margin-top: 0;
     margin-bottom: 0;
-    color: ${cores.rosa};
+    color: ${colors.pink};
     font-size: 18px;
     font-weight: bold;
   }
@@ -115,7 +115,7 @@ export const FormContainer = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    color: ${cores.brancaRosada};
+    color: ${colors.pinkishWhite};
 
     .buttomMargin {
       margin-top: 20px;
@@ -130,8 +130,8 @@ export const FormContainer = styled.div`
     cursor: pointer;
     text-decoration: none;
     border: none;
-    background-color: ${cores.brancaRosada};
-    color: ${cores.rosa};}
+    background-color: ${colors.pinkishWhite};
+    color: ${colors.pink};}
 `
 export const InputGroup = styled.div`
   label {
@@ -142,10 +142,10 @@ export const InputGroup = styled.div`
   }
 
   input {
-    background-color: ${cores.branca};
+    background-color: ${colors.white};
     height: 32px;
     padding: 0 8px;
-    border: 1px solid ${cores.branca};
+    border: 1px solid ${colors.white};
     width: 100%;
     box-sizing: border-box;
   }
@@ -175,7 +175,7 @@ export const SucessStep = styled.div`
     display: flex;
     flex-direction: column;
     gap: 8px;
-    color: ${cores.brancaRosada};
+    color: ${colors.pinkishWhite};
 
     button {
     max-width: 100%;
@@ -186,8 +186,8 @@ export const SucessStep = styled.div`
     cursor: pointer;
     text-decoration: none;
     border: none;
-    background-color: ${cores.brancaRosada};
-    color: ${cores.rosa};}
+    background-color: ${colors.pinkishWhite};
+    color: ${colors.pink};}
 `
 export const EmptyCart = styled.p`
     display: flex;
@@ -195,7 +195,7 @@ export const EmptyCart = styled.p`
     margin-bottom: 0;
     font-weight: bold;
     font-size: 16px;
-    color: ${cores.brancaRosada};
+    color: ${colors.pinkishWhite};
     text-align: center;
     
     

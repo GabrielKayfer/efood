@@ -1,15 +1,14 @@
-import { Image, HeaderContainer, LogoImg, Title } from "./styles"
-
 import headerBackground from '../../assets/images/bannerHeader.png'
 import logo from '../../assets/images/logo.png'
+import * as S from "./styles"
 
 const Header = () => (
-    <Image style={{ backgroundImage: `url(${headerBackground})` }}>
-        <HeaderContainer>
-            <LogoImg src={logo} alt="logo" />
-            <Title>Viva experiências gastronômicas no conforto da sua casa</Title>
-        </HeaderContainer>
-    </Image>
+    <S.Image style={{ backgroundImage: `url(${headerBackground})` }}>
+        <S.HeaderContainer>
+            <S.LogoImg src={logo} alt="logo" />
+            <S.Title>Viva experiências gastronômicas no conforto da sua casa</S.Title>
+        </S.HeaderContainer>
+    </S.Image>
 )
 
 export default Header

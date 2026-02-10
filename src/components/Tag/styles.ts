@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { cores } from '../../utils'
+import { colors } from '../../utils'
 
 type TagContainerProps = {
     $size: 'small' | 'big'
@@ -7,8 +7,8 @@ type TagContainerProps = {
 }
 
 export const TagContainer = styled.div<TagContainerProps>`
-    background-color: ${cores.rosa};
-    color: ${cores.brancaRosada};
+    background-color: ${colors.pink};
+    color: ${colors.pinkishWhite};
     font-size: ${({ $size }) => ($size === 'small' ? '12px' : '14px')};
     padding: ${({ $size, $variant }) => {
         if ($size === 'small') return '4px 6px'

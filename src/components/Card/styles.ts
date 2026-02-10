@@ -1,12 +1,12 @@
 import styled from "styled-components"
-import { cores } from "../../utils"
+import { colors } from "../../utils"
 import { TagContainer } from "../Tag/styles"
 
 type Variant = "restaurant" | "product"
 
-export const RestCard = styled.article<{ $variant: Variant }>`
-  background-color: ${cores.branca};
-  border: 1px solid ${cores.rosa};
+export const RestaurantCard = styled.article<{ $variant: Variant }>`
+  background-color: ${colors.white};
+  border: 1px solid ${colors.pink};
   position: relative;
   display: flex;
   flex-direction: column;
@@ -15,8 +15,8 @@ export const RestCard = styled.article<{ $variant: Variant }>`
   ${({ $variant }) =>
     $variant === "product"
       ? `
-        background-color: ${cores.rosa};
-        color: ${cores.brancaRosada};
+        background-color: ${colors.pink};
+        color: ${colors.pinkishWhite};
         padding: 8px;
         border-radius: 8px;
         
@@ -27,8 +27,8 @@ export const RestCard = styled.article<{ $variant: Variant }>`
     $variant === "product"
       ? `
         ${TagContainer} {
-          background-color: ${cores.brancaRosada};
-          color: ${cores.rosa};
+          background-color: ${colors.pinkishWhite};
+          color: ${colors.pink};
           font-weight: 600;
           border-radius: 0px;
           display: flex;
@@ -57,7 +57,7 @@ export const CardImage = styled.img<{ $variant: Variant }>`
       : ""}
 `
 
-export const Categorys = styled.ul`
+export const Categories = styled.ul`
   position: absolute;
   top: 16px;
   right: 16px;
@@ -70,7 +70,7 @@ export const Categorys = styled.ul`
   margin: 0;
 `
 
-export const ConteudoCard = styled.div<{ $variant: Variant }>`
+export const CardContent = styled.div<{ $variant: Variant }>`
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -85,7 +85,7 @@ export const ConteudoCard = styled.div<{ $variant: Variant }>`
       : ""}
 `
 
-export const ContainerTitulo = styled.div<{ $variant: Variant }>`
+export const TitleContainer = styled.div<{ $variant: Variant }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -100,13 +100,13 @@ export const ContainerTitulo = styled.div<{ $variant: Variant }>`
       : ""}
 `
 
-export const ContainerNota = styled.div`
+export const RatingContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
 `
 
-export const Titulo = styled.h2<{ $variant: Variant }>`
+export const Title = styled.h2<{ $variant: Variant }>`
   font-weight: 700;
   font-size: 18px;
   margin: 0;
@@ -120,7 +120,7 @@ export const Titulo = styled.h2<{ $variant: Variant }>`
       : ""}
 `
 
-export const Descricao = styled.p<{ $variant: Variant }>`
+export const Description = styled.p<{ $variant: Variant }>`
   padding: 0;
   font-weight: 400;
   font-size: 14px;
