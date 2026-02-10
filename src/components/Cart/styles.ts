@@ -134,6 +134,12 @@ export const FormContainer = styled.div`
     color: ${colors.pink};}
 `
 export const InputGroup = styled.div`
+
+  p {
+  font-size: 12px;
+  text-align: center;
+  margin-bottom: 0;}
+
   label {
     font-size: 14px;
     font-weight: bold;

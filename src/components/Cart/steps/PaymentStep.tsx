@@ -40,9 +40,12 @@ const PaymentStep = () => {
                 })
                 .required('Campo obrigatório'),
             expiresMonth: Yup.string()
-                .test('mm', 'O mês de vencimento do cartão tem 2 dígitos', (v) => {
-                    return onlyDigits(v ?? '').length === 2
+                .test('mm', 'Mês inválido', (value) => {
+                    if (!value) return false
+                    const month = Number(onlyDigits(value))
+                    return month >= 1 && month <= 12
                 })
+                .required('Campo obrigatório')
                 .required('Campo obrigatório'),
             expiresYear: Yup.string()
                 .test('yy', 'O ano de vencimento do cartão tem 2 dígitos', (v) => {
